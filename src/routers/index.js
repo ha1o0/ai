@@ -1,3 +1,5 @@
+import { getAdapter } from '../services/aimodels/index.js';
+
 /**
  * A plugin that provide encapsulated routes
  * @param {FastifyInstance} fastify encapsulated fastify instance
@@ -7,9 +9,20 @@ async function routes (fastify, options) {
   // const collection = fastify.mongo.db.collection('test_collection')
 
   fastify.get('/', async (request, reply) => {
-    return { hello: 'world2' }
+    return { hello: 'world' }
   })
 
+  fastify.post('/chat', async (request, reply) => {
+    const { model, prompt } = request.body;
+
+    try {
+      const adapter = getAdapter(model); // 动态获取适配器
+      const response = await adapter.generateResponse(prompt);
+      return { model, response };
+    } catch (error) {
+      reply.status(500).send({ error: error.message });
+    }
+  });
   // fastify.get('/animals', async (request, reply) => {
   //   const result = await collection.find().toArray()
   //   if (result.length === 0) {

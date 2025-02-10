@@ -1,7 +1,9 @@
-// ESM
+import dotenv from 'dotenv';
 import Fastify from 'fastify'
 // import dbConnector from './services/db.js'
 import routers from './routers/index.js'
+
+dotenv.config();
 
 /**
  * @type {import('fastify').FastifyInstance} Instance of Fastify
