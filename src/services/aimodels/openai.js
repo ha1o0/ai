@@ -1,15 +1,17 @@
 import OpenAI from 'openai';
 
 class OpenAIAdapter {
-  constructor() {
+  model = ''
+  constructor(model = 'gpt-4') {
     this.client = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY, // 从环境变量获取 API Key
     });
+    this.model = model;
   }
 
   async generateResponse(prompt) {
     const response = await this.client.chat.completions.create({
-      model: 'gpt-4',
+      model: this.model,
       messages: [{ role: 'user', content: prompt }],
     });
 

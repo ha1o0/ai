@@ -1,14 +1,21 @@
 import OpenAI from 'openai';
 
-class AliAIAdapter {
+class XunfeiAIAdapter {
   model = ''
+  serviceIdModelMap = {
+    "deepseek-r1": "xdeepseekr1qwen32b"
+  }
 
-  constructor(model = 'deepseek-v3') {
+  constructor(model = 'deepseek-r1') {
+    console.log(process.env.XUNFEI_API_KEY)
     this.client = new OpenAI({
-      apiKey: process.env.ALI_DEEPSEEK_API_KEY,
-      baseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+      apiKey: process.env.XUNFEI_API_KEY,
+      baseURL: "https://maas-api.cn-huabei-1.xf-yun.com/v1"
     });
-    this.model = model;
+    if (!this.serviceIdModelMap[model]) {
+      model = 'deepseek-r1';
+    }
+    this.model = this.serviceIdModelMap[model];
   }
 
   async generateResponse(prompt) {
@@ -24,4 +31,4 @@ class AliAIAdapter {
   }
 }
 
-export default AliAIAdapter;
+export default XunfeiAIAdapter;

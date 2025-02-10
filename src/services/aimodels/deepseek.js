@@ -1,15 +1,18 @@
 import OpenAI from 'openai';
 
-class OpenAIAdapter {
-  constructor() {
+class DeepseekAIAdapter {
+  model = ''
+  constructor(model = 'deepseek-r1') {
     this.client = new OpenAI({
-      apiKey: process.env.DEEPSEEK_API_KEY, // 从环境变量获取 API Key
+      apiKey: process.env.DEEPSEEK_API_KEY,
+      baseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1"
     });
+    this.model = model;
   }
 
   async generateResponse(prompt) {
     const response = await this.client.chat.completions.create({
-      model: 'deepseek-r1',
+      model: this.model,
       messages: [{ role: 'user', content: prompt }],
     });
 
@@ -17,4 +20,4 @@ class OpenAIAdapter {
   }
 }
 
-export default OpenAIAdapter;
+export default DeepseekAIAdapter;

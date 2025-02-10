@@ -13,10 +13,10 @@ async function routes (fastify, options) {
   })
 
   fastify.post('/chat', async (request, reply) => {
-    const { model, prompt } = request.body;
+    const { serviceProvider, model, prompt } = request.body;
 
     try {
-      const adapter = getAdapter(model); // 动态获取适配器
+      const adapter = getAdapter(model, serviceProvider); // 动态获取适配器
       const response = await adapter.generateResponse(prompt);
       return { model, response };
     } catch (error) {
